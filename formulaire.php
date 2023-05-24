@@ -27,18 +27,37 @@ include('cnx/bdd.php');
                     $dossierSite = 'images/' .$_FILES['monImage']['name'];
 
 
-                    $extension = strrchr($_FILES['monImage']['name'], '.');
-                    $autorise = ['.jpg', '.jpg'];
-                    if (in_array($extension, $autorise)){
-                        $deplacer = move_uploaded_file($dossierTempo, $dossierSite);
+                    $extension = strrchr($_FILES['monImage']['name'], '.'); //strrchr permet de pouvoir dire où on va couper le nom de notre image ici 
+                    $autorise = ['.jpg', '.png']; // Creer un tableau de type array 
+                    if (in_array($extension, $autorise)){ // Verifier l'extention de notre fichier est autorisée
+                        $deplacer = move_uploaded_file($dossierTempo, $dossierSite); // Deplacer le fichier avec la fonction move_uploaded_file
+/****************************On verifie si le bien dans la table existe */
+                        $sql = 'SELECT bien FROM bien WHERE bien = :bien'; // la réquêtte sql pour vérifier 
 
-                        $sql = 'INSERT INTO bien (bien, image) VALUES (:bien, :image)';
+                        // Executer la réquêtte 
                         $req = $bdd->prepare($sql);
                         $req->execute( array(
+                            ':bien' => $_POST['bien']
+                        ));
+                        $count = $req->rowCount(); //Compter le nombre de bien dans la table
+                        if ($count) { // Une fois le nombre de bien compter affiche un message d'erreur s'il existe 
+                            echo '<div class="error">Ce Bien existe déjà</div>';
+                        }else {  // Si non on insert dans la table le bien selectionné 
+                            $sql    = 'INSERT INTO bien (bien, image) VALUES (:bien, :image)'; // Insertion des fichier dans la base de donnée
+                        $req    = $bdd->prepare($sql);
+                        $retour = $req->execute( array(
                             ':bien' => $_POST['bien'],
                             ':image' => $_FILES['monImage']['name']
                         ));
-                    } else {
+                        if($retour) {
+                            echo '<div class="success">Le Bien à été inséré</div>';
+                        }else{
+                            echo '<div class="error">Le Bien n\'a pas été inséré</div>';
+                        }
+                    }
+/***************************On verifie si le bien dans la table existe */
+
+                    } else { //Extention d'image n'est pas autorisée car on utilise uniquement des images de type jpg
                         echo "<div class='error'>Cette extention d'images n'est pas autorisée</div>";
                     }
 
