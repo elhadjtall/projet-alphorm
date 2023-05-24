@@ -1,5 +1,5 @@
 <?php
-include('admin/cnx/bdd.php');
+include('cnx/bdd.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +31,13 @@ include('admin/cnx/bdd.php');
                     $autorise = ['.jpg', '.jpg'];
                     if (in_array($extension, $autorise)){
                         $deplacer = move_uploaded_file($dossierTempo, $dossierSite);
+
+                        $sql = 'INSERT INTO bien (bien, image) VALUES (:bien, :image)';
+                        $req = $bdd->prepare($sql);
+                        $req->execute( array(
+                            ':bien' => $_POST['bien'],
+                            ':image' => $_FILES['monImage']['name']
+                        ));
                     } else {
                         echo "<div class='error'>Cette extention d'images n'est pas autorisée</div>";
                     }
