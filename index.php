@@ -16,6 +16,37 @@ include('cnx/bdd.php');
         <section>
             <form action="" method="POST">
                 <h1>Gestion des Bricks</h1>
+<?php // Verifier les champs du formulaire avec la fonction empty et isset
+if(isset($_POST['submit'])){
+    if (empty($_POST['pseudo']) || empty($_POST['pass'])){
+        echo '<div class="error">Merci de remplir de tous les champs </div>';
+    } else{ // Verifier si les information rentrer correspond à celle de la base de donnée 
+        // On utilise la requêtte sql 
+        $sql = ' SELECT * FROM admin  
+                WHERE pseudo = :pseudo AND pass = :pass';  // les conditions sql et mode de selection
+        // Preparer notre requêtte sql 
+        $req= $bdd->prepare($sql);
+        // Executer notre requêtte
+        $req->execute(
+            array( // Créer un tableau de type array 
+                ':pseudo' => $_POST['pseudo'], // Affecter les valeurs à des variables
+                ':pass' => $_POST['pass'], 
+            )
+        );
+        // Compter les resultats 
+        // On creer une variables $count
+        $count = $req->rowCount();
+
+        // Savoir s'il y'a un resultat dans la base qui est supérieur à 0
+        if($count > 0) {
+            header('Location:admin/'); // Envoyer les information via la fonction header dans la table admin
+        } else {
+            echo '<div class="error">Acces refusé </div>';
+        }
+    }
+}
+
+?>
                 <input type="text" name="pseudo" id="pseudo" placeholder="@pseudo">
                 <input type="password" name="pass" id="pass" placeholder="@password">
                 <input type="submit" name="submit" id="submit" value="Entrer">
