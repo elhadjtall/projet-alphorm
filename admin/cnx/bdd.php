@@ -1,6 +1,5 @@
 <?php
-
-$dsn = 'mysql:host=localhost;dbname=bricks;charset=utf8';
+$dsn = 'mysql:host=localhost;dbname=brick;charset=utf8';
 $user = 'root';
 $password = '';
 

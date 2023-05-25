@@ -1,5 +1,7 @@
 <?php // relier notre fichier index.php à la base de donnée
-include('cnx/bdd.php');
+//Proteger notre notre page index par la fonction session_start
+session_start();
+include('admin/cnx/bdd.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,12 +35,17 @@ if(isset($_POST['submit'])){
                 ':pass' => $_POST['pass'], 
             )
         );
+        #Recupérer les donnée par la fonction fetch
+        // On creer une variable $data 
+        $data = $req->fetch(PDO::FETCH_ASSOC);
+
         // Compter les resultats 
         // On creer une variables $count
         $count = $req->rowCount();
 
         // Savoir s'il y'a un resultat dans la base qui est supérieur à 0
         if($count > 0) {
+            $_SESSION['pseudo'] = $data['pseudo'];
             header('Location:admin/'); // Envoyer les information via la fonction header dans la table admin
         } else {
             echo '<div class="error">Acces refusé </div>';
