@@ -9,7 +9,7 @@ include('admin/cnx/bdd.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin/style.css">
     <title>Document</title>
 </head>
 <body>
@@ -45,6 +45,15 @@ if(isset($_POST['submit'])){
 
         // Savoir s'il y'a un resultat dans la base qui est supérieur à 0
         if($count > 0) {
+            //Ajouter une condition le checkbox
+            if(isset($_POST['memoire'])) {
+                // On génère un coockie
+                setcookie('pseudo', $data['pseudo'], time()+3600*24*365);
+                setcookie('pseudo', $data['pass'], time()+3600*24*365);
+            }else {
+                setcookie('pseudo', $data['pseudo'], time()-1);
+                setcookie('pseudo', $data['pass'], time()-1);
+            }
             $_SESSION['pseudo'] = $data['pseudo'];
             header('Location:admin/'); // Envoyer les information via la fonction header dans la table admin
         } else {
@@ -54,14 +63,24 @@ if(isset($_POST['submit'])){
 }
 
 ?>
-                <input type="text" name="pseudo" id="pseudo" placeholder="@pseudo">
-                <input type="password" name="pass" id="pass" placeholder="@password">
+                <input type="text" name="pseudo" id="pseudo" placeholder="@pseudo" value="<?php if(isset($_COOKIE['pseudo'])) { echo $_COOKIE['pseudo']; }?>">
+                <input type="password" name="pass" id="pass" placeholder="@password" value="<?php if(isset($_COOKIE['pass'])) { echo $_COOKIE['pass']; } ?>">
                 <input type="submit" name="submit" id="submit" value="Entrer">
 
                 <!-- Créer une boite appeler checkbox -->
                 <div id="boxMemoire">
-                    
-                <input type="checkbox" name="memoire" id="memoire">
+<!-- Ajouter une fonction pour se souvenir de la personne -->
+<?php 
+if (isset($_POST['pseudo'])) { // Fonction qui permet de checker tout en ce souvenant du pseudo
+?>
+        <input type="checkbox"  checked name="memoire" id="memoire">
+<?php
+} else {
+?>
+        <input type="checkbox" name="memoire" id="memoire">
+<?php
+}
+?>
                 <label for="memoire" class="checkbox">Se souvenir de moi</label>
                 </div>
             </form>
