@@ -57,6 +57,13 @@ if(isset($_POST['submit'])){
                 <input type="text" name="pseudo" id="pseudo" placeholder="@pseudo">
                 <input type="password" name="pass" id="pass" placeholder="@password">
                 <input type="submit" name="submit" id="submit" value="Entrer">
+
+                <!-- Créer une boite appeler checkbox -->
+                <div id="boxMemoire">
+                    
+                <input type="checkbox" name="memoire" id="memoire">
+                <label for="memoire" class="checkbox">Se souvenir de moi</label>
+                </div>
             </form>
         </section>
     </article>

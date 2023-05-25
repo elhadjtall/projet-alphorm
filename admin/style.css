@@ -64,6 +64,33 @@ article h1{
 article p {
     text-align: center;
 }
+/******************* MEMOIRE *********************************/
+#boxMemoire {
+    width: 75%;
+    margin: auto;
+}
+#boxMemoire input {
+    display: none;
+
+}
+#boxMemoire .checkbox::before{
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: #ecf0f1;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+#boxMemoire input:checked + .checkbox::before {
+    content: '\002713';
+    background-color: #e67e22;
+    border-color: #e67e22;
+}
+
+/********************* FIN MEMOIRE **************************/
 
 /****************** Dowload ************/
 #download {
