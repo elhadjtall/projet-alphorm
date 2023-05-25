@@ -1,12 +1,10 @@
 <?php
-//On contunie notre session start
+//Poursuivre la session 
 session_start();
-// On verifie la présence de session
-if(isset($_SESSION['pseudo'])) {
-    $pseudo = $_SESSION['pseudo'];
-} else { //On envoie les information dans le formulaire index.php du projet
-    header('Location:../index.php');
-}
+
+
+//Detruire la session courante pour permettre à se deconnecter
+session_destroy();
 
 ?>
 <!DOCTYPE html>
@@ -16,13 +14,15 @@ if(isset($_SESSION['pseudo'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Gestions des Bricks</title>
+    <title>Document</title>
 </head>
 <body>
     <article>
         <section>
-            <p><a href="../session-out.php"></a> Se deconnecter</p>
+            <h1>Session out</h1>
+            <p><a href="index.php">Se reconnecter</a></p>
         </section>
     </article>
+    
 </body>
 </html>
